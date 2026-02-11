@@ -1,0 +1,45 @@
+<div class="admin-container" dir="rtl">
+    <div class="header-section">
+        <h1>ניהול הגרלות</h1>
+    </div>
+    <table class="lottery-table">
+        <thead>
+            <tr>
+                <th style="width: 20%;">מזהה</th>
+                <th style="width: 20%;">שם הזוכה</th>
+                <th style="width: 15%;">מחיר</th>
+                <th style="width: 20%;">שם המתנה</th>
+                <th style="width: 10%;">קוד</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let present of presents">
+                <td>
+                    <button class="run-lottery-btn" *ngIf="!( (present?.winnerId ?? 0) > 0 )"
+                        (click)="Lottery(present.id!)">
+                        בצע הגרלה
+                    </button>
+                    <span class="winner-info-id" *ngIf="(present?.winnerId ?? 0) > 0">
+                        ID זוכה: {{ present?.winnerId }}
+                    </span>
+                </td>
+                <td class="winner-name-cell">
+                    @if (present.winner; as winnerObj) {
+                    <span class="winner-tag">
+                        {{ winnerObj.firstName }} {{ winnerObj.lastName }}
+                    </span>
+                    }
+                    @else if ((present.winnerId ?? 0) > 0) {
+                    <span class="loading-text">מכין פרטי זוכה...</span>
+                    }
+                    @else {
+                    <span class="no-winner">טרם הוגרל</span>
+                    }
+                </td>
+                <td class="price-cell">{{ present?.price }} ₪</td>
+                <td class="present-name-cell">{{ present?.name }}</td>
+                <td class="id-cell">{{ present?.id }}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>

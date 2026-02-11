@@ -1,0 +1,39 @@
+<div class="luxury-basket-container">
+    <h2 class="basket-title">הסל שלי</h2>
+    <div *ngIf="myGifts && myGifts.length > 0; else emptyBasket" class="basket-grid">
+        <div class="basket-card" *ngFor="let item of myGifts">
+            <button class="remove-btn-top" (click)="removeItem(item.present)">✕</button>
+            <div class="item-info">
+                <img [src]="item.present?.pictureUrl" alt="product image" class="item-img">
+                <div class="item-details">
+                    <h3 class="item-name">{{ item.present?.name }}</h3>
+                    <p class="item-price">₪{{ item.present?.price }}</p>
+                </div>
+            </div>
+            <div class="card-actions">
+                <div class="quantity-controls">
+                    <button class="qty-btn" (click)="removeItemFromBasket(item.present)">−</button>
+                    <span class="qty-number">{{ item.quantity || 1 }}</span>
+                    <button class="qty-btn" (click)="addItemToBasket(item.present)">+</button>
+                </div>
+                <div class="item-total">
+                    <span>₪{{ (item.present?.price || 0) * (item.quantity || 1) }}</span>
+                </div>
+            </div>
+        </div>
+        <div class="basket-summary">
+            <div class="total-line">
+                <h3>סה"כ לתשלום</h3>
+                <span class="final-price">₪{{ totalSum() }}</span>
+            </div>
+            <button class="checkout-btn" (click)="addPurchase()">לביצוע תשלום</button>
+        </div>
+    </div>
+    <ng-template #emptyBasket>
+        <div class="empty-state">
+            <div class="empty-icon">🎁</div>
+            <p>העגלה שלך מחכה למתנות...</p>
+            <button class="go-shopping-btn" routerLink="/api/present/getAll">חזרה לחנות</button>
+        </div>
+    </ng-template>
+</div>

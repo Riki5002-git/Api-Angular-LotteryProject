@@ -1,0 +1,30 @@
+<div class="dialog-container">
+    <h2 mat-dialog-title class="section-title">מתנות התורם</h2>
+    <mat-dialog-content class="presents-dialog-content">
+        @if (isLoading) {
+        <div class="loading-spinner">טוען נתונים...</div>
+        } @else {
+        <div class="presents-grid">
+            @for (present of presentsList; track present.id) {
+            <div class="present-card">
+                <div class="image-wrapper">
+                    <img [src]="present.pictureUrl" [alt]="present.name" class="present-image" />
+                </div>
+                <div class="present-details">
+                    <h3 class="present-name">{{ present.name }}</h3>
+                    <p class="present-description">{{ present.description }}</p>
+                    <div class="present-footer">
+                        <span class="present-value">ערך: <strong>{{ present.price }} ₪</strong></span>
+                    </div>
+                </div>
+            </div>
+            } @empty {
+            <p class="no-data">אין מתנות להצגה עבור תורם זה.</p>
+            }
+        </div>
+        }
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+        <button mat-flat-button color="primary" class="close-btn" (click)="close()">סגור</button>
+    </mat-dialog-actions>
+</div>

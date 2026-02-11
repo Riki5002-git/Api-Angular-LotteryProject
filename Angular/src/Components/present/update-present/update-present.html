@@ -1,0 +1,61 @@
+<div class="luxury-container">
+    <div class="form-card">
+        <h2 class="form-title">עדכון פרטי מתנה</h2>
+
+        <form [formGroup]="addPresentForm" (ngSubmit)="onSubmit()">
+
+            @for (field of formFields; track field.name) {
+            <div class="input-group">
+                <label [for]="field.name">{{ field.label }}</label>
+                <input [id]="field.name" [type]="field.type" [formControlName]="field.name"
+                    [placeholder]="'הכנס ' + field.label">
+                @if (addPresentForm.get(field.name)?.invalid && addPresentForm.get(field.name)?.touched) {
+                <small class="error-text">{{ field.errorMsg }}</small>
+                }
+            </div>
+            }
+
+            <div class="input-group">
+                <label>תמונת המתנה</label>
+                <div class="file-upload-wrapper">
+                    <input type="file" (change)="onFileSelected($event)" accept="image/*" id="file-input">
+                    <label for="file-input" class="file-label">בחר קובץ...</label>
+                    <div class="preview-container" *ngIf="base64Image">
+                        <img [src]="base64Image" class="image-preview">
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid-inputs">
+                <div class="input-group">
+                    <label for="donorId">בחר תורם</label>
+                    <select id="donorId" formControlName="donorId">
+                        <option value="" disabled>-- בחר תורם --</option>
+                        @for (donor of donorsList; track donor.id) {
+                        <option [value]="donor.id">{{ donor.firstName }} {{ donor.lastName }}</option>
+                        }
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label for="categoryId">בחר קטגוריה</label>
+                    <select id="categoryId" formControlName="categoryId">
+                        <option value="" disabled>-- בחר קטגוריה --</option>
+                        @for (category of categoryList; track category.id) {
+                        <option [value]="category.id">{{ category.name }}</option>
+                        }
+                    </select>
+                </div>
+            </div>
+
+            <div class="button-group">
+                <button type="submit" [disabled]="addPresentForm.invalid" class="royal-btn">
+                    שמור שינויים במערכת
+                </button>
+                <button type="button" class="cancel-btn" (click)="goBack()">
+                    ביטול
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

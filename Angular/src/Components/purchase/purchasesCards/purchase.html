@@ -1,0 +1,21 @@
+<div class="purchase-container">
+    @if (purchaseList.length > 0) {
+    <div class="list-wrapper">
+        @for (purchase of purchaseList; track purchase.id) {
+        <div class="purchase-item">
+            <div class="main-info">
+                <span class="buyer-name">{{ purchase.person?.firstName }} {{ purchase.person?.lastName }}</span>
+                <span class="purchase-id">#{{ purchase.id }}</span>
+            </div>
+            <div class="side-info">
+                <span class="purchase-date">{{ purchase.purchaseDate | date:'dd/MM/yyyy' }}</span>
+            </div>
+        </div>
+        }
+    </div>
+    } @else {
+    <div class="empty-state">
+        <p>עדיין לא נרכשו יחידות ממתנה זו</p>
+    </div>
+    }
+</div>

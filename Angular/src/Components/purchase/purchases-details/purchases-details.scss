@@ -1,0 +1,130 @@
+.Purchases-container {
+    direction: rtl;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: 'Segoe UI', system-ui, sans-serif;
+
+    .header-section {
+        margin-bottom: 30px;
+        padding-right: 15px;
+
+        h2 {
+            margin: 0;
+            color: #2c3e50;
+            font-size: 1.5rem;
+        }
+
+        p {
+            margin: 5px 0 0;
+            color: #7f8c8d;
+            font-size: 0.9rem;
+        }
+    }
+
+    .buyers-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 15px;
+    }
+
+    .buyer-card {
+        background: #ffffff;
+        border-radius: 12px;
+        padding: 15px;
+        display: flex;
+        align-items: flex-start;
+        gap: 15px;
+        position: relative;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        border: 1px solid #f0f0f0;
+        transition: transform 0.2s, box-shadow 0.2s;
+
+        &:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        .avatar {
+            width: 45px;
+            height: 45px;
+            background: #ebf5ff;
+            color: #3498db;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.9rem;
+            flex-shrink: 0;
+        }
+
+        .buyer-details {
+            flex-grow: 1;
+
+            .buyer-name {
+                margin: 0 0 8px 0;
+                font-size: 1.05rem;
+                color: #2c3e50;
+            }
+
+            .info-row {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                margin-bottom: 4px;
+                font-size: 0.85rem;
+                color: #5d6d7e;
+
+                .icon {
+                    font-size: 0.9rem;
+                    opacity: 0.7;
+                }
+            }
+
+            .user-tag {
+                margin-top: 8px;
+                background: #f8f9fa;
+                padding: 2px 8px;
+                border-radius: 20px;
+                display: inline-flex;
+            }
+        }
+
+        .purchase-date-badge {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            font-size: 0.7rem;
+            color: #bdc3c7;
+            background: #fff;
+        }
+    }
+
+    .empty-state {
+        grid-column: 1 / -1;
+        text-align: center;
+        padding: 50px;
+        color: #95a5a6;
+        border: 2px dashed #ecf0f1;
+        border-radius: 12px;
+    }
+}
+
+.gift-info-tag {
+    background: #fff9eb;
+    color: #b38728;
+    padding: 4px 10px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    margin: 8px 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    border: 1px solid rgba(212, 175, 55, 0.2);
+
+    strong {
+        color: #1a1a1a;
+        text-decoration: underline;
+    }
+}

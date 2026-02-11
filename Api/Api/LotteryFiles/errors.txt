@@ -1,0 +1,5 @@
+11/02/2026 00:21:32: Failed to email יויו@gmail.com for להקל על החיים. Error: The client or server is only configured for E-mail addresses with ASCII local-parts: יויו@gmail.com.
+11/02/2026 00:41:48: Failed to email יויו@gmail.com for דרימ כארד. Error: The client or server is only configured for E-mail addresses with ASCII local-parts: יויו@gmail.com.
+11/02/2026 00:43:46: Failed to email יויו@gmail.com for לימודי מקצוע. Error: The client or server is only configured for E-mail addresses with ASCII local-parts: יויו@gmail.com.
+11/02/2026 00:51:11: Failed to email יויו@gmail.com for הגשמת חלום. Error: The client or server is only configured for E-mail addresses with ASCII local-parts: יויו@gmail.com.
+11/02/2026 08:59:24: Failed to email R0527167315@gmail.com for טבעת לאישה. Error: Failure sending mail.

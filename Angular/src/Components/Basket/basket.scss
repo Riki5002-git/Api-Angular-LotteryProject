@@ -1,0 +1,271 @@
+:host {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.luxury-basket-container {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    direction: rtl;
+    background: #ffffff;
+    border-radius: 20px;
+    border: 1px solid #f0f0f0;
+    width: 95%;
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 2rem;
+    min-height: 450px;
+    box-shadow: 0 15px 50px rgba(0, 0, 0, 0.1);
+
+    :host-context(.side-basket) & {
+        width: 100% !important;
+        max-width: 100%;
+        height: calc(100vh - 40px);
+        margin: 0;
+        padding: 1.2rem;
+        position: sticky;
+        top: 20px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+        min-height: unset;
+    }
+
+    .basket-title {
+        font-size: 1.8rem;
+        font-weight: 800;
+        margin-bottom: 1.5rem;
+        color: #000;
+        border-bottom: 2px solid #f5f5f5;
+        padding-bottom: 15px;
+        text-align: center;
+
+        :host-context(.side-basket) & {
+            font-size: 1.3rem;
+            text-align: right;
+            margin-bottom: 1rem;
+        }
+    }
+
+    .basket-grid {
+        flex-grow: 1;
+        overflow-y: auto;
+        overflow-x: hidden;
+        padding: 5px;
+
+        &::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        &::-webkit-scrollbar-thumb {
+            background: #e0e0e0;
+            border-radius: 10px;
+        }
+    }
+
+    .basket-card {
+        box-sizing: border-box;
+        position: relative;
+        background: #fff;
+        border-radius: 15px;
+        padding: 1rem;
+        margin: 0 2px 1.2rem 2px;
+        border: 1px solid #f5f5f5;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        transition: transform 0.2s;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.02);
+
+        &:hover {
+            transform: translateY(-2px);
+        }
+
+        .remove-btn-top {
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            background: #ff3b30;
+            color: white;
+            border: none;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            z-index: 10;
+            transition: background 0.2s;
+
+            &:hover {
+                background: #d10000;
+            }
+        }
+
+        .item-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+
+            .item-img {
+                width: 55px;
+                height: 55px;
+                border-radius: 8px;
+                object-fit: cover;
+                flex-shrink: 0;
+            }
+
+            .item-details {
+                overflow: hidden;
+
+                h3 {
+                    font-size: 0.95rem;
+                    margin: 0;
+                    color: #333;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                }
+
+                p {
+                    margin: 2px 0 0;
+                    color: #b38728;
+                    font-weight: 700;
+                    font-size: 0.9rem;
+                }
+            }
+        }
+    }
+
+    .card-actions {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: #fafafa;
+        padding: 8px 12px;
+        border-radius: 10px;
+
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+
+            .qty-btn {
+                background: white;
+                border: 1px solid #ddd;
+                width: 26px;
+                height: 26px;
+                border-radius: 50%;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+                &:hover {
+                    background: #f0f0f0;
+                }
+            }
+
+            .qty-number {
+                font-weight: 700;
+                font-size: 0.9rem;
+            }
+        }
+
+        .item-total {
+            font-weight: 800;
+            font-size: 0.9rem;
+        }
+    }
+
+    .basket-summary {
+        margin-top: auto;
+        padding-top: 15px;
+        border-top: 2px solid #f5f5f5;
+
+        .total-line {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+
+            h3 {
+                color: #888;
+                font-size: 0.9rem;
+                margin: 0;
+            }
+
+            .final-price {
+                font-size: 1.5rem;
+                font-weight: 900;
+            }
+        }
+
+        .checkout-btn {
+            width: 100%;
+            background: #000;
+            color: #d4af37;
+            padding: 1rem;
+            border-radius: 12px;
+            border: none;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+
+            &:hover {
+                background: #222;
+            }
+        }
+    }
+}
+
+.empty-state {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 30px 10px;
+
+    .empty-icon {
+        font-size: 3.5rem;
+        margin-bottom: 15px;
+        animation: floating-gift 3s ease-in-out infinite;
+    }
+
+    p {
+        color: #888;
+        margin-bottom: 1.2rem;
+        font-size: 0.95rem;
+    }
+
+    .go-shopping-btn {
+        background: #b38728;
+        color: white;
+        padding: 10px 25px;
+        border-radius: 50px;
+        text-decoration: none;
+        font-size: 0.9rem;
+        font-weight: 600;
+    }
+
+    .go-shopping-btn:hover {
+        background: #9c6f1a;
+        cursor: pointer;
+    }
+}
+
+@keyframes floating-gift {
+
+    0%,
+    100% {
+        transform: translateY(0px) rotate(0deg);
+    }
+
+    50% {
+        transform: translateY(-15px) rotate(5deg);
+    }
+}

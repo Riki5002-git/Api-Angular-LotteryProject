@@ -1,0 +1,27 @@
+<div class="luxury-table-container">
+    <h2>רשימת משתמשים</h2>
+    <div *ngIf="people && people.length > 0; else loading" class="table-wrapper">
+        <table class="luxury-table">
+            <thead>
+                <tr>
+                    <th>מזהה</th>
+                    <th>שם פרטי</th>
+                    <th>שם משפחה</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let p of people">
+                    <td class="id-cell">#{{ p.id }}</td>
+                    <td>{{ p.firstName }}</td>
+                    <td>{{ p.lastName }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<ng-template #loading>
+    <div class="loader-wrapper">
+        <div class="royal-loader"></div>
+        <p>טוען את רשימת המשתמשים...</p>
+    </div>
+</ng-template>

@@ -1,0 +1,64 @@
+<div class="luxury-table-container">
+    <h2>רשימת תורמים</h2>
+    <div class="top-actions">
+        <div class="search-section">
+            <div class="search-box">
+                <input type="text" placeholder="חפש לפי שם מלא..." [(ngModel)]="searchFullName">
+                <button (click)="filterDonorsByName(searchFullName)">🔍</button>
+            </div>
+            <div class="search-box">
+                <input type="text" placeholder="חפש לפי אימייל..." [(ngModel)]="searchEmail">
+                <button (click)="filterDonorsByEmail(searchEmail)">🔍</button>
+            </div>
+            <div class="search-box">
+                <input type="text" placeholder="חפש לפי שם מתנה ..." [(ngModel)]="searchPresent">
+                <button (click)="filterDonorsByPresent(searchPresent)">🔍</button>
+            </div>
+            <button class="clear-filters-button" (click)="clearFilters()">X נקה מסננים</button>
+        </div>
+        <div class="button-section">
+            <button class="add-button" (click)="addDonor()">הוסף תורם חדש</button>
+        </div>
+    </div>
+    <div *ngIf="!isLoading; else loading">
+        <div *ngIf="donors && donors.length > 0; else noData" class="table-wrapper">
+            <table class="luxury-table">
+                <thead>
+                    <tr>
+                        <th>מזהה</th>
+                        <th>שם פרטי</th>
+                        <th>שם משפחה</th>
+                        <th>פעולות</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let d of donors">
+                        <td class="id-cell">#{{ d.id }}</td>
+                        <td>{{ d.firstName }}</td>
+                        <td>{{ d.lastName }}</td>
+                        <td>
+                            <button class="action-button view-button" (click)="viewPresents(d.id!)">צפה ברשימת
+                                מתנות</button>
+                            <button class="action-button edit-button" (click)="updateDonor(d.id!)">✏️</button>
+                            <button class="action-button delete-button" (click)="deleteDonor(d.id!)">🗑️</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <ng-template #noData>
+            <div class="no-data-card">
+                <div class="no-data-icon">🔍</div>
+                <h3>לא נמצאו תורמים</h3>
+                <p>מצטערים, החיפוש לא הניב תוצאות. נסה מונח אחר או אפס את החיפוש.</p>
+                <button class="reset-link-button" (click)="loadDonors()">הצג את כל הרשימה</button>
+            </div>
+        </ng-template>
+    </div>
+    <ng-template #loading>
+        <div class="loader-wrapper">
+            <div class="royal-loader"></div>
+            <p>טוען נתונים...</p>
+        </div>
+    </ng-template>
+</div>

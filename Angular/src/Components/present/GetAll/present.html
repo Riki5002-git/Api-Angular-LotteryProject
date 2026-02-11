@@ -1,0 +1,80 @@
+<div class="main-page-layout">
+    <aside class="side-basket">
+        <app-basket></app-basket>
+    </aside>
+
+    <main class="content-side">
+        <div class="categoriesList">
+            <button class="category-btn" (click)="filterByCategory(0)">הכל</button>
+            <button *ngFor="let cat of categoriesList" class="category-btn" (click)="filterByCategory(cat.id!)">
+                {{ cat.name }}
+            </button>
+        </div>
+
+        @if (personService.isAdmin()){
+        <div class="sort-container">
+            <label>מיין לפי:</label>
+            <select id="sortSelect" #sortRef (change)="sortPresents(sortRef.value)">
+                <option value="">בחר אפשרות...</option>
+                <option value="price">מחיר: מהגבוה לנמוך</option>
+                <option value="purchase">הכי נמכרים</option>
+            </select>
+        </div>
+        }
+
+        <div class="luxury-container">
+            <div *ngIf="isLoading" class="loader-wrapper">
+                <div class="royal-loader">טוען...</div>
+            </div>
+
+            <div class="gifts-grid" *ngIf="!isLoading">
+                <div class="gift-card" *ngFor="let p of (flag ? presentCategories : presents)">
+                    <div class="image-section">
+                        <div class="card-badge">{{ getCategoryName(p.categoryId) }}</div>
+                        @if (personService.isAdmin()){
+                        <button class="buyers-btn-floating" (click)="getPurchases(p.id!)" title="צפה ברוכשים">
+                            <span class="icon">🛒</span>
+                            <span class="count-text">רוכשים</span>
+                        </button>
+                        <button class="edit-btn-floating" (click)="updatePresent(p.id!)" title="ערוך מתנה">
+                            <span class="icon">✏️</span>
+                            <span class="count-text">עריכה</span>
+                        </button>
+                        <button class="delete-btn-floating" (click)="deletePresent(p.id!)" title="מחק מתנה">
+                            <span class="icon">🗑️</span>
+                            <span class="count-text">מחיקה</span>
+                        </button>
+                        }
+                        <img [src]="p.pictureUrl" [alt]="p.name" class="main-img" />
+                    </div>
+
+                    <div class="card-body">
+                        <h3 class="gift-title">{{ p.name }}</h3>
+                        <p class="gift-description">{{ p.description }}</p>
+                        <span class="price-tag">₪{{ p.price }}</span>
+                        @if (p.winnerId && p.winnerId !== 0 && p.winner) {
+                        <div class="winner-info">
+                            <span class="winner-tag">זוכה: {{ p.winner!.firstName }} {{ p.winner!.lastName }}</span>
+                            <h5 class="not-available-msg">(לא ניתן לבצע הזמנה למוצר זה)</h5>
+                        </div>
+                        }
+                        @else {
+                        <button class="royal-btn" (click)="addToBasket(personService.getUserId()!, p.id!)">
+                            הוספה לסל
+                        </button>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+@if (showPurchases && selectedPresentId > 0) {
+<div class="modal-overlay" (click)="closePurchases()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+        <button class="close-btn" (click)="closePurchases()">×</button>
+        <app-purchase [presentId]="selectedPresentId"></app-purchase>
+    </div>
+</div>
+}

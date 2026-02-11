@@ -1,0 +1,21 @@
+<div class="add-donor-container">
+    <h2>הוספת תורם חדש</h2>
+    <form [formGroup]="addDonorForm" (ngSubmit)="onSubmit()">
+        @for (field of formFields; track field.name) {
+        <div class="donor-group">
+            <label [for]="field.name">{{ field.label }}</label>
+            <input [id]="field.name" [type]="field.type" [formControlName]="field.name" class="form-control"
+                [placeholder]="'הכנס ' + field.label">
+            @if (addDonorForm.get(field.name)?.invalid && addDonorForm.get(field.name)?.touched) {
+            <small class="error-text">{{ field.errorMsg }}</small>
+            }
+        </div>
+        }
+        <div class="donor-actions">
+            <button type="submit" [disabled]="addDonorForm.invalid" class="btn-submit">
+                שמור תורם
+            </button>
+            <button type="button" routerLink="/api/Donor/getAll" class="btn-cancel">בטל</button>
+        </div>
+    </form>
+</div>

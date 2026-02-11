@@ -1,0 +1,49 @@
+:host {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+main {
+    flex: 1;
+    background-color: #fdf9f3;
+    padding: 20px;
+    display: block;
+}
+
+.my-footer {
+    background-color: #171717;
+    color: #b38728;
+    text-align: center;
+    padding: 25px 0;
+    font-family: 'Assistant', sans-serif;
+    font-weight: 500;
+    font-size: 0.9rem;
+    border-top: 1px solid rgba(212, 175, 55, 0.2);
+    letter-spacing: 0.5px;
+    box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.02);
+    direction: rtl;
+
+    &,
+    * {
+        color: #b38728 !important;
+    }
+}
+
+::-webkit-scrollbar {
+    width: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: #fdf9f3;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #e2bd66;
+    border-radius: 10px;
+}
+
+body {
+    scrollbar-width: thin;
+    scrollbar-color: #e2bd66 #fdf9f3;
+}

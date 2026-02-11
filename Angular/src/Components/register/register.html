@@ -1,0 +1,14 @@
+<form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+    <div *ngFor="let field of formFields" class="form-group">
+        <label>{{ field.label }}</label>
+        <input [type]="field.type" [formControlName]="field.name" class="form-control">
+        <div *ngIf="registerForm.get(field.name)?.invalid && registerForm.get(field.name)?.touched" class="error-text">
+            <small>{{ field.errorMsg }}</small>
+            
+            <small *ngIf="field.name === 'password' && registerForm.get('password')?.errors?.['minlength']">
+                מינימום 3 תווים.
+            </small>
+        </div>
+    </div>
+    <button type="submit" [disabled]="registerForm.invalid">שלח רישום</button>
+</form>

@@ -1,0 +1,23 @@
+<nav class="navbar">
+  <div class="logo">מכירה סינית</div>
+  <ul class="nav-links">
+    @if(personService.isLoggedIn()) {
+    <h3>שלום {{ personService.getPersonName() }}</h3>
+    }
+    <li><a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">דף הבית</a></li>
+    <li><a *ngIf="personService.isAdmin()" routerLink="/api/person/getAll" routerLinkActive="active">משתמשים</a></li>
+    <li><a routerLink="/api/person/register" routerLinkActive="active">הרשמה</a></li>
+    @if(personService.isLoggedIn()) {
+    <li><a (click)="onLogout()" routerLinkActive="active">התנתק</a></li>
+    } @else {
+    <li><a routerLink="/api/person/login" routerLinkActive="active">התחבר</a></li>
+    }
+    <li><a routerLink="/api/present/getAll" routerLinkActive="active">מתנות</a></li>
+    <li><a *ngIf="personService.isAdmin()" routerLink="/api/Donor/getAll" routerLinkActive="active">תורמים</a></li>
+    <li><a *ngIf="personService.isAdmin()" routerLink="/api/purchase/buyers" routerLinkActive="active">רכישות</a></li>
+    <li><a *ngIf="personService.isAdmin()" routerLink="/api/present/add" routerLinkActive="active">הוספת מתנה</a></li>
+    <li><a *ngIf="personService.isLoggedIn()" routerLink="/api/basket/getBasket" routerLinkActive="active">הסל שלי</a>
+  </ul>
+  <a *ngIf="personService.isAdmin()" class="lottery-link" routerLink="/api/Lottery" routerLinkActive="active">ביצוע
+    הגרלה</a>
+</nav>

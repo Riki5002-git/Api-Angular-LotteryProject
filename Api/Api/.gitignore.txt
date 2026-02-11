@@ -1,0 +1,12 @@
+# להתעלם מתיקיות של Visual Studio
+.vs/
+[Bb]in/
+[Oo]bj/
+
+# להתעלם מתיקיות של אנגולר וספריות
+node_modules/
+dist/
+.angular/
+
+# להתעלם מקבצי לוג
+*.log

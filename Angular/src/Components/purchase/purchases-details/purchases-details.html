@@ -1,0 +1,38 @@
+<div class="Purchases-container">
+    <div class="header-section">
+        <h2>פירוט רכישות</h2>
+    </div>
+
+    <div class="buyers-grid">
+        @for(p of purchasesList; track p.id) {
+        <div class="buyer-card">
+            <div class="buyer-details">
+                <h3 class="buyer-name">{{ p.person?.firstName }} {{ p.person?.lastName }}</h3>
+
+                <div class="gift-info-tag">
+                    <span class="icon">🎁</span>
+                    <span class="text">רכש/ה את: <strong>{{ p.present?.name }}</strong></span>
+                </div>
+
+                <div class="info-row">
+                    <span class="icon">📧</span>
+                    <span class="text">{{ p.person?.email }}</span>
+                </div>
+
+                <div class="info-row">
+                    <span class="icon">📱</span>
+                    <span class="text">{{ p.person?.phone }}</span>
+                </div>
+            </div>
+
+            <div class="purchase-date-badge">
+                {{ p.purchaseDate | date:'dd/MM/yy' }}
+            </div>
+        </div>
+        } @empty {
+        <div class="empty-state">
+            <p>לא נמצאו רכישות במערכת</p>
+        </div>
+        }
+    </div>
+</div>

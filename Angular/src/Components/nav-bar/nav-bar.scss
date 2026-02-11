@@ -1,0 +1,97 @@
+.navbar {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    padding: 15px 50px !important;
+    background: #1a1a1a !important;
+    border-bottom: 3px solid #d4af37 !important;
+    direction: rtl !important;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.logo {
+    font-size: 2.2rem !important;
+    font-weight: 900 !important;
+    font-family: 'Assistant', sans-serif;
+    color: #d4af37 !important;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2) !important;
+    cursor: pointer;
+    margin: 0 !important;
+    letter-spacing: 1px !important;
+}
+
+.nav-links {
+    display: flex !important;
+    list-style: none !important;
+    gap: 30px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    align-items: center !important;
+}
+
+.nav-links li a {
+    text-decoration: none !important;
+    color: #f9f8f6 !important;
+    font-weight: 600 !important;
+    font-size: 1.1rem !important;
+    transition: all 0.3s ease !important;
+    position: relative;
+}
+
+.nav-links li a:hover,
+.nav-links li a.active {
+    color: #d4af37 !important;
+    cursor: pointer;
+}
+
+.nav-links li a.active::after {
+    content: '' !important;
+    position: absolute !important;
+    bottom: -5px !important;
+    right: 0 !important;
+    width: 100% !important;
+    height: 2px !important;
+    background: #d4af37 !important;
+}
+
+@media (max-width: 768px) {
+    .navbar {
+        flex-direction: column !important;
+        padding: 15px !important;
+        gap: 15px !important;
+    }
+
+    .nav-links {
+        gap: 15px !important;
+        font-size: 0.9rem !important;
+        flex-wrap: wrap !important;
+        justify-content: center !important;
+    }
+}
+
+h3 {
+    margin: 0;
+    font-size: 1rem;
+    background: rgb(187, 187, 187);
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-weight: 500;
+}
+
+.lottery-link {
+    background: #d4af37 !important;
+    color: #1a1a1a !important;
+    padding: 5px 15px !important;
+    border-radius: 20px !important;
+    font-weight: 600 !important;
+    transition: all 0.3s ease !important;
+    text-decoration: none !important;
+}
+
+.lottery-link:hover {
+    color: #000000 !important;
+    cursor: pointer;
+    background-color: #7e6319 !important;
+}

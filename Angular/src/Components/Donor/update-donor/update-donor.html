@@ -1,0 +1,23 @@
+<div class="luxury-container">
+    <div class="form-card">
+        <h2 class="form-title">עדכון פרטי תורם</h2>
+        <form [formGroup]="updateDonorForm" (ngSubmit)="onSubmit()">
+            @for (field of formFields; track field.name) {
+            <div class="input-group">
+                <label [for]="field.name">{{ field.label }}</label>
+                <input [id]="field.name" [type]="field.type" [formControlName]="field.name"
+                    [placeholder]="'הכנס ' + field.label">
+                @if (updateDonorForm.get(field.name)?.invalid && updateDonorForm.get(field.name)?.touched) {
+                <small class="error-text">{{ field.errorMsg }}</small>
+                }
+            </div>
+            }
+            <div class="button-group">
+                <button type="submit" [disabled]="updateDonorForm.invalid" class="royal-btn">
+                    שמור שינויים במערכת
+                </button>
+                <button type="button" routerLink="/api/Donor/getAll" class="btn-cancel">בטל</button>
+            </div>
+        </form>
+    </div>
+</div>

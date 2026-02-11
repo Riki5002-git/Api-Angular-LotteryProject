@@ -1,0 +1,35 @@
+LotteryNumber: 0
+Present: chair, Winner: Riki Goldberg, Email: R0527167315@gmail.com, Phone: 0527167315
+LotteryNumber: 0
+Present: chair, Winner: איציק לוי, Email: itzik@gmail.com, Phone: 34567890
+Present: chair
+Winner: Riki Goldberg, Email: R0527167315@gmail.com, Phone: 0527167315
+Present: chair
+Winner: Riki Goldberg, Email: R0527167315@gmail.com, Phone: 0527167315
+Present: chair
+Winner: Riki Goldberg, Email: R0527167315@gmail.com, Phone: 0527167315
+Present: chair
+Winner: beni cohen, Email: beni@gmail.com, Phone: 345678
+Present: לימוד מקצוע
+Winner: איציק לוי, Email: itzik@gmail.com, Phone: 34567890
+Present: סיטי קאר
+Winner: איציק לוי, Email: itzik@gmail.com, Phone: 34567890
+Present: דרים כארד
+Winner: איציק לוי, Email: itzik@gmail.com, Phone: 34567890
+Present: טבעת לאישה
+Winner: איציק לוי, Email: itzik@gmail.com, Phone: 34567890
+Date: 10/02/2026 19:09 | Present: לימוד מקצוע | Winner: איציק לוי | Email: itzik@gmail.com | Phone: 34567890
+Date: 11/02/2026 00:10 | Present: פאה אצל חוי וייס | Winner: איציק לוי | Email: itzik@gmail.com | Phone: 34567890
+Date: 11/02/2026 00:10 | Present: חדש שינה מעוצב | Winner: איציק לוי | Email: itzik@gmail.com | Phone: 34567890
+Date: 11/02/2026 00:21 | Present: להקל על החיים | Winner: יויו יויו | Email: יויו@gmail.com | Phone: 2345678
+Date: 11/02/2026 00:41 | Present: דרימ כארד | Winner: יויו יויו | Email: יויו@gmail.com | Phone: 2345678
+Date: 11/02/2026 00:43 | Present: לימודי מקצוע | Winner: יויו יויו | Email: יויו@gmail.com | Phone: 2345678
+Date: 11/02/2026 00:51 | Present: הגשמת חלום | Winner: יויו יויו | Email: יויו@gmail.com | Phone: 2345678
+Date: 11/02/2026 00:56 | Present: רכב יוקרתי | Winner: איציק לוי | Email: itzik@gmail.com | Phone: 34567890
+Date: 11/02/2026 01:00 | Present: אושר עד | Winner: תמר נויגרשל | Email: tamar198633@gmail.com | Phone: 34567890
+Date: 11/02/2026 01:01 | Present: איפור | Winner: תמר נויגרשל | Email: tamar198633@gmail.com | Phone: 34567890
+Date: 11/02/2026 01:11 | Present: דלק לשנה | Winner: משפחת גולדברג | Email: G6536085@gmail.com | Phone: 026536085
+Date: 11/02/2026 01:24 | Present: כסף לתכשיטים | Winner: משפחת גולדברג | Email: G6536085@gmail.com | Phone: 026536085
+Date: 11/02/2026 02:48 | Present: מאסטר בניקיון | Winner: איציק לוי | Email: itzik@gmail.com | Phone: 34567890
+Date: 11/02/2026 03:24 | Present: לימוד מקצוע | Winner: איציק לוי | Email: itzik@gmail.com | Phone: 34567890
+Date: 11/02/2026 08:59 | Present: טבעת לאישה | Winner: Riki Goldberg | Email: R0527167315@gmail.com | Phone: 0527167315

@@ -1,0 +1,61 @@
+.purchase-container {
+    direction: rtl;
+    padding: 5px;
+
+    .list-wrapper {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+    }
+
+    .purchase-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px 10px;
+        border-bottom: 1px solid #f0f0f0;
+        transition: background 0.2s;
+
+        &:last-child {
+            border-bottom: none;
+        }
+
+        &:hover {
+            background-color: #f9f9f9;
+        }
+
+        .main-info {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+
+            .buyer-name {
+                font-size: 0.95rem;
+                font-weight: 500;
+                color: #2c3e50;
+            }
+
+            .purchase-id {
+                font-size: 0.75rem;
+                color: #bdc3c7;
+            }
+        }
+
+        .side-info {
+            .purchase-date {
+                font-size: 0.85rem;
+                color: #95a5a6;
+                background: #f8f9fa;
+                padding: 4px 8px;
+                border-radius: 4px;
+            }
+        }
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 30px;
+        color: #999;
+        font-size: 0.9rem;
+    }
+}
