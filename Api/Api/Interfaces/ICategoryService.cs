@@ -1,9 +1,9 @@
-﻿using Api.DTOs;
+﻿using Api.Models;
 
 namespace Api.Interfaces
 {
     public interface ICategoryService
     {
-        Task<List<CategoryDTOs>> GetAllCategories();
+        Task<List<Category>> GetAllCategories();
     }
 }

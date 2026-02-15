@@ -16,9 +16,6 @@ namespace Api.Repositories
 
         public async Task AddToBasket(int personId, int presentId)
         {
-            var present = await _context.Presents.FindAsync(presentId);
-            if (present == null) throw new Exception("Present not found");
-
             var basket = await _context.Baskets
                 .Include(b => b.Presents)
                 .FirstOrDefaultAsync(b => b.PersonId == personId);
@@ -58,46 +55,30 @@ namespace Api.Repositories
                 .Include(b => b.Presents)
                 .FirstOrDefaultAsync(b => b.PersonId == personId);
 
-            if (basket == null) throw new Exception("Basket not found");
-
-            var item = basket.Presents.FirstOrDefault(i => i.PresentId == presentId);
-            if (item != null)
+            if (basket != null)
             {
-                if (item.Quantity > 1)
+                var item = basket.Presents.FirstOrDefault(i => i.PresentId == presentId);
+                if (item != null)
                 {
-                    item.Quantity--;
+                    if (item.Quantity > 1)
+                    {
+                        item.Quantity--;
+                    }
+                    else
+                    {
+                        basket.Presents.Remove(item);
+                    }
+                    await _context.SaveChangesAsync();
                 }
-                else
-                {
-                    basket.Presents.Remove(item);
-                }
-
-                await _context.SaveChangesAsync();
             }
         }
 
-        public async Task<BasketDTOs?> GetMyBasket(int personId)
+        public async Task<Basket?> GetMyBasket(int personId)
         {
-            var basket = await _context.Baskets
+            return await _context.Baskets
                 .Include(b => b.Presents!)
                 .ThenInclude(bi => bi.Present)
                 .FirstOrDefaultAsync(b => b.PersonId == personId);
-
-            if (basket == null)
-                return null;
-
-            return new BasketDTOs
-            {
-                Id = basket.Id, // ה-ID האמיתי של הסל!
-                PersonId = basket.PersonId,
-                Presents = basket.Presents?.Select(bi => new Dtos.BasketItem
-                {
-                    Id = bi.Id,
-                    PresentId = bi.PresentId,
-                    Quantity = bi.Quantity,
-                    Present = bi.Present // פרטי המתנה להצגה ב-HTML
-                }).ToList()
-            };
         }
 
         public async Task ClearItemCompletely(int personId, int presentId)

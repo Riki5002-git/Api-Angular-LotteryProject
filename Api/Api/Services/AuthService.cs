@@ -12,36 +12,47 @@ public interface IAuthService
 public class AuthService : IAuthService
 {
     private readonly IConfiguration _config;
+    private readonly ILogger<AuthService> _logger;
 
-    public AuthService(IConfiguration config)
+    public AuthService(IConfiguration config, ILogger<AuthService> logger)
     {
         _config = config;
+        _logger = logger;
     }
 
     public string GenerateToken(Person user)
     {
-        var secretKey = _config["JwtSettings:SecretKey"]
-                        ?? throw new InvalidOperationException("SecretKey is missing!");
-
-        var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
-        var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
-
-        // עדכון ה-Claims כך שיכילו את ה-Role מה-DB
-        var claims = new[]
+        _logger.LogInformation("Generating JWT token for user: {UserName} (ID: {UserId})", user.UserName, user.Id);
+        var secretKey = _config["JwtSettings:SecretKey"];
+        if (string.IsNullOrEmpty(secretKey))
         {
-            new Claim(ClaimTypes.Name, user.UserName),
-            new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-            new Claim(ClaimTypes.Role, user.Role), // הוספת ה-Role לטוקן
-            new Claim("CustomData", "AnyValue")
-        };
-
-        var token = new JwtSecurityToken(
-            issuer: _config["JwtSettings:Issuer"],
-            audience: _config["JwtSettings:Audience"],
-            claims: claims,
-            expires: DateTime.Now.AddHours(3),
-            signingCredentials: credentials);
-
-        return new JwtSecurityTokenHandler().WriteToken(token);
+            _logger.LogCritical("JWT SecretKey is missing from configuration! Token generation failed.");
+            throw new InvalidOperationException("SecretKey is missing!");
+        }
+        try
+        {
+            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
+            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+            var claims = new[]
+            {
+                new Claim(ClaimTypes.Name, user.UserName),
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new Claim(ClaimTypes.Role, user.Role)
+            };
+            var token = new JwtSecurityToken(
+                issuer: _config["JwtSettings:Issuer"],
+                audience: _config["JwtSettings:Audience"],
+                claims: claims,
+                expires: DateTime.Now.AddHours(3),
+                signingCredentials: credentials);
+            var generatedToken = new JwtSecurityTokenHandler().WriteToken(token);
+            _logger.LogInformation("Successfully generated token for user {UserName}.", user.UserName);
+            return generatedToken;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "An error occurred while creating a token for user {UserName}", user.UserName);
+            throw;
+        }
     }
 }

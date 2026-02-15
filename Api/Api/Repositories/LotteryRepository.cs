@@ -16,55 +16,35 @@ namespace Api.Repositories
             _context = context;
         }
 
-        /// <summary>
-        /// מבצע הגרלה עבור מתנה ספציפית מתוך רשימת הרוכשים ששילמו (Purchases)
-        /// </summary>
         public async Task<Present> MakeLottery(int presentId)
         {
-            // 1. שליפת המתנה כולל פרטי הזוכה אם כבר קיים (כדי למנוע הגרלה כפולה)
-            var present = await _context.Presents
-                .FirstOrDefaultAsync(p => p.Id == presentId);
+            var present = await _context.Presents.FirstOrDefaultAsync(p => p.Id == presentId);
 
-            if (present == null)
-                throw new Exception($"מתנה עם ID {presentId} לא נמצאה.");
+            if (present == null || (present.WinnerId != null && present.WinnerId != 0))
+                return null;
 
-            if (present.WinnerId != null && present.WinnerId != 0)
-                throw new Exception("כבר בוצעה הגרלה למתנה זו, לא ניתן להגריל שוב.");
-
-            // 2. שליפת כל הרכישות שבוצעו עבור המתנה הזו בלבד
-            // אנחנו רצים על Purchases כי אלו רכישות סופיות ולא סלים זמניים
             var relevantPurchases = await _context.Purchases
                 .Where(p => p.PresentId == presentId)
                 .Include(p => p.Person)
                 .ToListAsync();
 
             if (relevantPurchases == null || !relevantPurchases.Any())
-            {
-                throw new Exception("לא נמצאו רוכשים למתנה זו, לא ניתן לבצע הגרלה.");
-            }
+                return null;
 
-            // 3. בניית רשימת המשתתפים - כל שורת רכישה היא כרטיס הגרלה אחד
             List<Person> peopleOfLottery = relevantPurchases
                 .Where(p => p.Person != null)
                 .Select(p => p.Person!)
                 .ToList();
 
-            // 4. ביצוע ההגרלה באופן רנדומלי
             var random = new Random();
-            int randomIndex = random.Next(peopleOfLottery.Count);
-            var winner = peopleOfLottery[randomIndex];
+            var winner = peopleOfLottery[random.Next(peopleOfLottery.Count)];
 
-            // 5. עדכון הזוכה בבסיס הנתונים
             present.WinnerId = winner.Id;
             present.Winner = winner;
 
-            // 6. שליחת מייל לזוכה המאושר
             await SendWinnerEmail(winner, present.Name);
-
-            // 7. רישום הזכייה בקובץ טקסט למעקב הנהלה
             await LogWinnerToFile(winner, present.Name);
 
-            // 8. שמירת השינויים ב-DB (עדכון ה-WinnerId במתנה)
             await _context.SaveChangesAsync();
             return present;
         }
@@ -78,12 +58,7 @@ namespace Api.Repositories
                     mail.From = new MailAddress("R0527167315@gmail.com");
                     mail.To.Add(winner.Email);
                     mail.Subject = "מזל טוב! זכית בהגרלה";
-                    mail.Body = $@"
-                        <div dir='rtl'>
-                            <h2>שלום {winner.FirstName}!</h2>
-                            <p>שמחים לעדכן אותך שזכית במתנה: <strong>{presentName}</strong> בהגרלה שערכנו.</p>
-                            <p>ניצור איתך קשר בהקדם לתיאום קבלת הפרס.</p>
-                        </div>";
+                    mail.Body = $"<div dir='rtl'><h2>שלום {winner.FirstName}!</h2><p>זכית ב: <strong>{presentName}</strong></p></div>";
                     mail.IsBodyHtml = true;
 
                     using (SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587))
@@ -96,9 +71,9 @@ namespace Api.Repositories
             }
             catch (Exception ex)
             {
-                // רישום שגיאה אם המייל לא נשלח
                 string errorPath = "LotteryFiles/errors.txt";
-                await File.AppendAllTextAsync(errorPath, $"{DateTime.Now}: Failed to email {winner.Email} for {presentName}. Error: {ex.Message}{Environment.NewLine}");
+                if (!Directory.Exists("LotteryFiles")) Directory.CreateDirectory("LotteryFiles");
+                await File.AppendAllTextAsync(errorPath, $"{DateTime.Now}: Failed to email {winner.Email}. {ex.Message}{Environment.NewLine}");
             }
         }
 
@@ -106,10 +81,8 @@ namespace Api.Repositories
         {
             string folderPath = "LotteryFiles";
             if (!Directory.Exists(folderPath)) Directory.CreateDirectory(folderPath);
-
             string fileWinnersPath = Path.Combine(folderPath, "lottery_winners.txt");
-            string content = $"Date: {DateTime.Now:dd/MM/yyyy HH:mm} | Present: {presentName} | Winner: {winner.FirstName} {winner.LastName} | Email: {winner.Email} | Phone: {winner.Phone}{Environment.NewLine}";
-
+            string content = $"Date: {DateTime.Now} | Present: {presentName} | Winner: {winner.FirstName} {winner.LastName}{Environment.NewLine}";
             await File.AppendAllTextAsync(fileWinnersPath, content);
         }
     }

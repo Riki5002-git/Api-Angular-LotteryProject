@@ -56,7 +56,9 @@ namespace Api.Repositories
         {
             var donor = await _context.Donors
                 .FirstOrDefaultAsync(d => d.FirstName == donorName);
-            if (donor == null) throw new Exception("Donor not found");
+
+            if (donor == null) return new List<Present>();
+
             return await _context.Presents
                 .Where(p => p.DonorId == donor.Id)
                 .ToListAsync();
@@ -88,9 +90,9 @@ namespace Api.Repositories
         public async Task<Donor?> GetDonorsPresent(string PresentName)
         {
             return await (from p in _context.Presents
-                         join d in _context.Donors on p.DonorId equals d.Id
-                         where p.Name == PresentName
-                         select d).FirstOrDefaultAsync();
+                          join d in _context.Donors on p.DonorId equals d.Id
+                          where p.Name == PresentName
+                          select d).FirstOrDefaultAsync();
         }
     }
 }

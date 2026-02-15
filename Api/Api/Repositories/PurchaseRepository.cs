@@ -18,7 +18,7 @@ namespace Api.Repositories
         {
             return await _context.Purchases
                 .Include(p => p.Person)
-                .Include(p => p.Present) // בלי השורה הזו, הנתון יחזור כ-null
+                .Include(p => p.Present)
                 .ToListAsync();
         }
 
@@ -46,17 +46,12 @@ namespace Api.Repositories
 
         public async Task AddPurchase(int personId, int basketId)
         {
-            var personExists = await _context.Persons.AnyAsync(p => p.Id == personId);
-            if (!personExists) throw new Exception($"User with ID {personId} not found in database.");
             var basket = await _context.Baskets
                 .Include(b => b.Presents)
                 .FirstOrDefaultAsync(b => b.Id == basketId && b.PersonId == personId);
 
-            if (basket == null) throw new Exception("Basket not found or does not belong to this user");
-            if (basket.Presents == null || !basket.Presents.Any())
-            {
-                return;
-            }
+            if (basket == null || basket.Presents == null) return;
+
             foreach (var item in basket.Presents)
             {
                 for (int i = 0; i < item.Quantity; i++)
@@ -70,7 +65,8 @@ namespace Api.Repositories
                     _context.Purchases.Add(purchase);
                 }
             }
-            _context.Remove(basket);
+
+            _context.Baskets.Remove(basket);
             await _context.SaveChangesAsync();
         }
     }

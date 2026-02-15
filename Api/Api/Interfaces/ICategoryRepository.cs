@@ -1,9 +1,10 @@
 ﻿using Api.DTOs;
+using Api.Models;
 
 namespace Api.Interfaces
 {
     public interface ICategoryRepository
     {
-        Task<List<CategoryDTOs>> GetAllCategories();
+        Task<List<Category>> GetAllCategories();
     }
 }

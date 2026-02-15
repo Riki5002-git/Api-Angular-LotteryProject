@@ -1,6 +1,6 @@
 ﻿using Api.Data;
-using Api.DTOs;
 using Api.Interfaces;
+using Api.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace Api.Repositories
@@ -12,10 +12,10 @@ namespace Api.Repositories
         {
             _context = context;
         }
-        public async Task<List<CategoryDTOs>> GetAllCategories()
+        public async Task<List<Category>> GetAllCategories()
         {
             return await _context.Categories
-                .Select(c => new CategoryDTOs
+                .Select(c => new Category
                 {
                     Id = c.Id,
                     Name = c.Name

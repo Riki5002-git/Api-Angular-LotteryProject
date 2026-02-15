@@ -1,5 +1,4 @@
-﻿
-using Api.Data;
+﻿using Api.Data;
 using Api.Interfaces;
 using Api.Models;
 using Microsoft.EntityFrameworkCore;
@@ -44,7 +43,7 @@ namespace Api.Repositories
 
         public async Task DeletePerson(int id)
         {
-            var person = await GetPersonById(id);
+            var person = await _context.Persons.FindAsync(id);
             if (person != null)
             {
                 _context.Persons.Remove(person);

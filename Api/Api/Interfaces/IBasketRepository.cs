@@ -1,4 +1,4 @@
-﻿using Api.Dtos;
+﻿using Api.Models;
 
 namespace Api.Interfaces
 {
@@ -6,7 +6,7 @@ namespace Api.Interfaces
     {
         Task AddToBasket(int personId, int presentId);
         Task RemoveFromBasket(int personId, int presentId);
-        Task<BasketDTOs?> GetMyBasket(int personId);
+        Task<Basket?> GetMyBasket(int personId);
         Task ClearItemCompletely(int personId, int presentId);
     }
 }

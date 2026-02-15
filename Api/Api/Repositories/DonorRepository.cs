@@ -59,18 +59,12 @@ namespace Api.Repositories
         {
             var curPresent = await _context.Presents.FirstOrDefaultAsync(p => p.Name == present);
             if (curPresent == null) return null;
-            return await _context.Donors
-                .FirstOrDefaultAsync(d => d.Id == curPresent.DonorId);
+            return await _context.Donors.FirstOrDefaultAsync(d => d.Id == curPresent.DonorId);
         }
 
         public async Task<List<Present?>> GetDonorsPresents(int id)
         {
-            {
-                var presents = await _context.Presents
-                    .Where(p => p.DonorId == id)
-                    .ToListAsync();
-                return presents;
-            }
+            return await _context.Presents.Where(p => p.DonorId == id).ToListAsync();
         }
     }
 }
