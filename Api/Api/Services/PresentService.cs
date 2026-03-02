@@ -2,6 +2,8 @@
 using Api.Interfaces;
 using Api.Models;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Caching.Distributed;
+using System.Text.Json;
 
 namespace Api.Services
 {
@@ -10,12 +12,14 @@ namespace Api.Services
         private readonly IPresentRepository _presentRepository;
         private readonly IDonorRepository _donorRepository;
         private readonly ILogger<PresentService> _logger;
+        private readonly IDistributedCache _cache;
 
-        public PresentService(IPresentRepository presentRepository, IDonorRepository donorRepository, ILogger<PresentService> logger)
+        public PresentService(IPresentRepository presentRepository, IDonorRepository donorRepository, ILogger<PresentService> logger, IDistributedCache cache)
         {
             _presentRepository = presentRepository;
             _donorRepository = donorRepository;
             _logger = logger;
+            _cache = cache;
         }
 
         public async Task AddPictureUrl(int id, string url)
@@ -53,9 +57,27 @@ namespace Api.Services
 
         public async Task<List<PresentDTOs>> GetAllPresents()
         {
-            _logger.LogInformation("Fetching all presents");
+            string cacheKey = "all-presents";
+            var cachedData = await _cache.GetStringAsync(cacheKey);
+            if (!string.IsNullOrEmpty(cachedData))
+            {
+                _logger.LogInformation("--- Cache HIT: Fetching from Redis ---");
+                return JsonSerializer.Deserialize<List<PresentDTOs>>(cachedData);
+            }
+
+            _logger.LogInformation("--- Cache MISS: Fetching from Database ---");
             var presents = await _presentRepository.GetAllPresents();
-            return presents.Select(MapToResponseDto).ToList();
+            var results = presents.Select(MapToResponseDto).ToList();
+
+            var cacheOptions = new DistributedCacheEntryOptions
+            {
+                AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(300)
+            };
+
+            var serializedData = JsonSerializer.Serialize(results);
+            await _cache.SetStringAsync(cacheKey, serializedData, cacheOptions);
+
+            return results;
         }
 
         public async Task<DonorDTOs?> GetDonorsPresent(string PresentName)

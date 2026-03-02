@@ -102,13 +102,19 @@ try
 
     builder.Services.AddAuthorization();
 
+    builder.Services.AddStackExchangeRedisCache(options => {
+    options.Configuration = builder.Configuration.GetSection("Redis")["ConnectionString"];
+    options.InstanceName = "Lottery_";
+    });
+
     var app = builder.Build();
 
-    if (app.Environment.IsDevelopment())
+    app.UseSwagger();
+    app.UseSwaggerUI(options =>
     {
-        app.UseSwagger();
-        app.UseSwaggerUI();
-    }
+        options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
+        options.RoutePrefix = string.Empty;
+    });
 
     app.UseCors("AllowAll");
 

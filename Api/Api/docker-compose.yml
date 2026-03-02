@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  # 1. שירות מסד הנתונים (SQL Server)
+  db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: sql-db
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=YourStrongPassword123
+    ports:
+      - "1433:1433"
+
+  # 2. שירות ה-Redis (לשיפור ביצועים)
+  redis:
+    image: redis:7-alpine
+    container_name: redis-cache
+    ports:
+      - "6379:6379"
+
+  # 3. ה-API שלך
+  api:
+    build: .
+    container_name: my-running-api
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+      - redis
+    environment:
+      - ConnectionStrings__DefaultConnection=Server=db;Database=LotteryDB;User Id=sa;Password=YourStrongPassword123;TrustServerCertificate=True;
+      - Redis__ConnectionString=redis:6379
+      - ASPNETCORE_ENVIRONMENT=Development
