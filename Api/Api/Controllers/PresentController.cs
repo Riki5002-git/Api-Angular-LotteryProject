@@ -3,6 +3,8 @@ using Api.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Caching.Distributed;
+using System.Text.Json;
 
 namespace Api.Controllers
 {
@@ -12,18 +14,38 @@ namespace Api.Controllers
     {
         private readonly IPresentService _presentService;
         private readonly ILogger<PresentController> _logger;
+        private readonly IDistributedCache _cache;
 
-        public PresentController(IPresentService presentService, ILogger<PresentController> logger)
+        public PresentController(IPresentService presentService, ILogger<PresentController> logger, IDistributedCache cache)
         {
             _presentService = presentService;
             _logger = logger;
+            _cache = cache;
         }
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<PresentDTOs>>> GetAllPresents()
         {
+            string cacheKey = "all_presents_list";
             _logger.LogInformation("Request received to fetch all presents.");
+
+            var cachedData = await _cache.GetStringAsync(cacheKey);
+            if (!string.IsNullOrEmpty(cachedData))
+            {
+                _logger.LogInformation("Cache HIT: Fetching presents from Redis.");
+                var cachedPresents = JsonSerializer.Deserialize<IEnumerable<PresentDTOs>>(cachedData);
+                return Ok(cachedPresents);
+            }
+
+            _logger.LogInformation("Cache MISS: Fetching presents from Database.");
             var presents = await _presentService.GetAllPresents();
+
+            var cacheOptions = new DistributedCacheEntryOptions()
+                .SetAbsoluteExpiration(TimeSpan.FromMinutes(5));
+
+            var serializedData = JsonSerializer.Serialize(presents);
+            await _cache.SetStringAsync(cacheKey, serializedData, cacheOptions);
+
             return Ok(presents);
         }
 
@@ -40,7 +62,9 @@ namespace Api.Controllers
             }
 
             await _presentService.AddPresent(presentDto);
-            _logger.LogInformation("Present {Name} added successfully.", presentDto.Name);
+            
+            await _cache.RemoveAsync("all_presents_list");
+            _logger.LogInformation("Present {Name} added successfully. Cache cleared.", presentDto.Name);
 
             return CreatedAtAction(nameof(GetPresentById), new { id = presentDto.Id }, presentDto);
         }
@@ -74,8 +98,10 @@ namespace Api.Controllers
             }
 
             await _presentService.UpdatePresent(id, presentDto);
-            _logger.LogInformation("Present with ID {Id} updated successfully.", id);
+            
+            await _cache.RemoveAsync("all_presents_list");
 
+            _logger.LogInformation("Present with ID {Id} updated successfully. Cache cleared.", id);
             return NoContent();
         }
 
@@ -93,8 +119,10 @@ namespace Api.Controllers
             }
 
             await _presentService.DeletePresent(id);
-            _logger.LogInformation("Present with ID {Id} deleted successfully.", id);
+            
+            await _cache.RemoveAsync("all_presents_list");
 
+            _logger.LogInformation("Present with ID {Id} deleted successfully. Cache cleared.", id);
             return NoContent();
         }
 
@@ -165,6 +193,9 @@ namespace Api.Controllers
         {
             _logger.LogInformation("Request to add picture to present ID: {Id}", presentId);
             await _presentService.AddPictureUrl(presentId, pictureUrl);
+            
+            await _cache.RemoveAsync("all_presents_list");
+            
             return NoContent();
         }
 
